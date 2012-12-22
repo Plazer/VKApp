@@ -42,10 +42,7 @@ package
 			}else {
 				trace("Possible local testing, or some problems");
 			// -- For local testing:
-				_flashVars['api_id'] = 3305500;
-				_flashVars['viewer_id'] = 1125984;
-				_flashVars['sid'] = "b4ebaed20459b08d0204e493f4b8c20f5f45b3a12034528bd20dad3c239a79a210abade2c03b94453f7cc";
-				_flashVars['secret'] = "b9b2937736";
+
 			// -- //
 			}
 
