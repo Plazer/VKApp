@@ -8,8 +8,10 @@ package
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.utils.getDefinitionByName;
-	
-	/**
+
+import gui.Listing;
+
+/**
 	 * ...
 	 * @author Plazer
 	 */
@@ -27,18 +29,18 @@ package
 			loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioError);
 			
 			// TODO show loader
-			trace("Show loader...");
+            Listing.getInstance().listTrace("Show loader...");
 		}
 		
 		private function ioError(e:IOErrorEvent):void 
 		{
-			trace(e.text);
+            Listing.getInstance().listTrace(e.text);
 		}
 		
 		private function progress(e:ProgressEvent):void 
 		{
 			// TODO update loader
-			trace("Progress...");
+            Listing.getInstance().listTrace("Progress...");
 			
 		}
 		
@@ -58,8 +60,8 @@ package
 			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, ioError);
 			
 			// TODO hide loader
-			trace("Hide loader...");
-			trace("Start Main ");
+            Listing.getInstance().listTrace("Hide loader...");
+            Listing.getInstance().listTrace("Start Main ");
 			
 			
 			startup();

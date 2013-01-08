@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'20.12.2012'</value>
+      <value>'03.01.2013'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,17 +32,17 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>E:\Flash\work\TestForVK\src</path-element>
+      <path-element>E:\Flash\work\VKUtils\src</path-element>
       <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>E:\Flash\work\TestForVK\src\Main.as</path-element>
+    <path-element>E:\Flash\work\VKUtils\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
   <default-size>
-    <width>800</width>
-    <height>600</height>
+    <width>807</width>
+    <height>730</height>
   </default-size>
 </flex-config>
