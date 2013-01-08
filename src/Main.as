@@ -72,6 +72,7 @@ package{
 		
 		private function checkPlayerInDb():void 
 		{
+            Listing.getInstance().listTrace("_flashVars['viewer_id'] = " + _flashVars['viewer_id']);
 			_vkUtil.get_user_param(_flashVars['viewer_id'], "uid", checkPlayerInDbHandler);
 			
 		}
@@ -211,6 +212,7 @@ package{
 		
 		private function getUserDb(e:MouseEvent):void 
 		{
+            Listing.getInstance().listTrace("getUserDb()");
 			_vkUtil.getUser_DB(getUsersDBHandler);	
 		}
 		
@@ -245,6 +247,7 @@ package{
 		
 		private function getUserFriendsHandler(data: Object):void {
             Listing.getInstance().listTrace("getUserFriendsHandler");
+            Listing.getInstance().listTrace("data = "+data);
 			for (var user:String in data) {
 				var userC:User = new User(data[user]["uid"], data[user]["first_name"], data[user]["last_name"], data[user]["photo"], 3, 100);
 				suppUser(userC);
@@ -288,7 +291,8 @@ package{
 		}
 				
 		private function formSlots():void {
-			var playerSlot:Slot ;
+            Listing.getInstance().listTrace("formSlots()");
+            var playerSlot:Slot ;
 			for (var i:uint = 1; i < _userList.length; i++ ) {
 				var slot:Slot = new Slot(_userList[i].first_name, _userList[i].photo, String(_userList[i].rnd), _userList[i].userType);
 				if (_userList[i].uid == _flashVars['viewer_id']) {
@@ -312,7 +316,9 @@ package{
 		}
 		
 		private function formViewList():void {
-			_userFriendsListViewer = new UsersList(_slotList, 8);
+            Listing.getInstance().listTrace("formViewList()");
+
+            _userFriendsListViewer = new UsersList(_slotList, 8);
 			_userFriendsListViewer.y = 200;
 			_userFriendsListViewer.x = 0;
 			this.addChild(_userFriendsListViewer);

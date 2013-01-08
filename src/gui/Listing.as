@@ -102,7 +102,7 @@ public class Listing extends MovieClip {
     private var _txtX:int = STAGE_WIDTH*0.1;
     private var _txtY:int = STAGE_HEIGHT*0.1;
 
-    private const STAGE_WIDTH:int = 800;
+    private const STAGE_WIDTH:int = 700;
     private const STAGE_HEIGHT:int = 600;
 
     private var _txtBorderColor:int = 0xDAE2E8;

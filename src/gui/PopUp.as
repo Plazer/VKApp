@@ -74,7 +74,7 @@ package gui
 		private var _txtX:int = 0;
 		private var _txtY:int = 0;
 		
-		private const STAGE_WIDTH:int = 800;
+		private const STAGE_WIDTH:int = 700;
 		private const STAGE_HEIGHT:int = 600;
 		
 		private var _txtBorderColor:int = 0xDAE2E8;

@@ -34,6 +34,7 @@ package utils
 		
 		private function onRequestFail(data: Object): void {
             Listing.getInstance().listTrace("Request Failed");
+            Listing.getInstance().listTrace("data - "+data);
 		}
 		
 		public function clean_DB():void {
@@ -62,11 +63,21 @@ package utils
 		}
 	
 		public function getUser_DB(resultHandler:Function):void {
-			var loader:URLLoader = new URLLoader();
-			var request:URLRequest = new URLRequest("http://truelancer.com/vkontakte/index.php/main/get_users");
-			request.method = URLRequestMethod.POST;
-			loader.load(request);
-			loader.addEventListener(Event.COMPLETE, resultHandler);
+            Listing.getInstance().listTrace("VKUtil | getUser_DB()");
+
+            try
+            {
+                var loader:URLLoader = new URLLoader();
+                var request:URLRequest = new URLRequest("http://truelancer.com/vkontakte/index.php/main/get_users");
+                request.method = URLRequestMethod.POST;
+                loader.load(request);
+                loader.addEventListener(Event.COMPLETE, resultHandler);
+            }
+            catch (err:Error)
+            {
+                Listing.getInstance().listTrace("VKUtil | getUser_DB() err="+err.message);
+            }
+
 		}
 		
 		public function getUserByUid_DB(id:uint, resultHandler:Function):void {
