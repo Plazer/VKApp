@@ -6,6 +6,7 @@ package userList
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.net.URLRequest;
+	import flash.system.LoaderContext;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.display.Graphics;
@@ -99,10 +100,13 @@ package userList
 		}
 		
 		private function loadImg(image_path:String):void {
+            var context:LoaderContext = new LoaderContext();
+            context.checkPolicyFile = true;
+
 			var image_loader:Loader=new Loader  ;
 			image_loader.contentLoaderInfo.addEventListener(Event.COMPLETE,image_loader_Complete);
 
-			image_loader.load(new URLRequest(image_path));
+			image_loader.load(new URLRequest(image_path), context);
 		}
 		
 		private function image_loader_Complete(e:Event):void 

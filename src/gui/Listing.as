@@ -87,6 +87,7 @@ public class Listing extends MovieClip {
     }
 
     public function listTrace(data:String):void {
+        trace(data);
         _textField.appendText(data + "\n");
     }
 

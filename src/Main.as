@@ -168,28 +168,28 @@ package{
 			btnGetUserInfo.addEventListener(MouseEvent.CLICK, getUser);
 			
 			var btnSaveUserInfo: VKButton = new VKButton('Save user to db');
-			btnSaveUserInfo.x = 104;
+			btnSaveUserInfo.x = btnGetUserInfo.x + btnGetUserInfo.width+2;
 			btnSaveUserInfo.y = 2;
 			addChild(btnSaveUserInfo);
 			
 			btnSaveUserInfo.addEventListener(MouseEvent.CLICK, saveUser);
 			
 			var btnGetUserInfoDb: VKButton = new VKButton('Get user info db');
-			btnGetUserInfoDb.x = 222;
+			btnGetUserInfoDb.x = btnSaveUserInfo.x + btnSaveUserInfo.width+2;
 			btnGetUserInfoDb.y = 2;
 			addChild(btnGetUserInfoDb);
 			
 			btnGetUserInfoDb.addEventListener(MouseEvent.CLICK, getUserDb);
 			
 			var btnGetUserParamDb: VKButton = new VKButton('Get user param db');
-			btnGetUserParamDb.x = 422;
+			btnGetUserParamDb.x = btnGetUserInfoDb.x + btnGetUserInfoDb.width+2;
 			btnGetUserParamDb.y = 2;
 			addChild(btnGetUserParamDb);
 			
 			btnGetUserParamDb.addEventListener(MouseEvent.CLICK, get_user_param);
 			
 			var btnGetUserFriends: VKButton = new VKButton('Get user friends');
-			btnGetUserFriends.x = 622;
+			btnGetUserFriends.x = btnGetUserParamDb.x + btnGetUserParamDb.width+2;
 			btnGetUserFriends.y = 2;
 			addChild(btnGetUserFriends);
 			
@@ -198,7 +198,7 @@ package{
 		
 		private function get_user_param(e:MouseEvent):void 
 		{
-			_vkUtil.get_user_param(1125984, "first_name", get_user_paramHandler);
+			_vkUtil.get_user_param(_flashVars['viewer_id'], "first_name", get_user_paramHandler);
 		}
 		
 		private function get_user_paramHandler(e:Event):void 
@@ -218,7 +218,7 @@ package{
 		
 		private function getUsersDBHandler(e:Event):void 
 		{
-            Listing.getInstance().listTrace("getUsersDBHandler ");
+            Listing.getInstance().listTrace("Main | getUsersDBHandler ");
             Listing.getInstance().listTrace("fromDB: " + e.target.data);
 			
 			_parser.parse_users_get(XML(e.target.data));
@@ -269,7 +269,7 @@ package{
 			var parsedUser:Object = _parser.parse_user_param(XML(e.target.data));
 
             Listing.getInstance().listTrace ("uid = " + parsedUser.uid);
-			if (parsedUser.value||parsedUser.uid==87377267){
+            if (parsedUser.value){
                 Listing.getInstance().listTrace(" - not null");
 				findAndSetTypeForUserByUid(uint(parsedUser.uid), int(parsedUser.value));
 			}
@@ -368,8 +368,6 @@ package{
 		}
 
 		private var _vkUtil:VKUtil;
-		private var _infoPopUp:PopUp;
-		private var _loader:Loader;
 		private var _flashVars: Object;
 		private var _parser:ParserXML;
 		private var _userFriendsListViewer:UsersList;
