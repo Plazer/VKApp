@@ -65,18 +65,18 @@ package utils
 		public function getUser_DB(resultHandler:Function):void {
             Listing.getInstance().listTrace("VKUtil | getUser_DB()");
 
-            try
-            {
+//            try
+//            {
                 var loader:URLLoader = new URLLoader();
                 var request:URLRequest = new URLRequest("http://truelancer.com/vkontakte/index.php/main/get_users");
                 request.method = URLRequestMethod.POST;
                 loader.load(request);
                 loader.addEventListener(Event.COMPLETE, resultHandler);
-            }
-            catch (err:Error)
-            {
-                Listing.getInstance().listTrace("VKUtil | getUser_DB() err="+err.message);
-            }
+//            }
+//            catch (err:Error)
+//            {
+//                Listing.getInstance().listTrace("VKUtil | getUser_DB() err="+err.message);
+//            }
 
 		}
 		
@@ -122,6 +122,14 @@ package utils
             Listing.getInstance().listTrace("fromDB");
             Listing.getInstance().listTrace("fromDB: " + e.target.data);
 		}
+
+        public function showOrderBox(item:String = ""):void {
+            _VK.callMethod("showOrderBox", {
+                type: 'item',
+                item: item
+            });
+        }
+
 		
 		public function setApiConnection(flashVars:Object):void 
 		{

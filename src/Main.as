@@ -4,6 +4,7 @@ package{
 	import flash.events.Event;
     import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
+    import flash.media.Sound;
 
     import gui.Listing;
 
@@ -22,8 +23,11 @@ package{
 	[Frame(factoryClass="Preloader")]
 	public class Main extends Sprite 
 	{
+        [Embed(source = "../sounds/vivaldi.mp3")]
+        private var MySound : Class;
+        private var sound : Sound;
 
-		public function Main():void 
+        public function Main():void
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
@@ -35,8 +39,10 @@ package{
 			// entry point
             startListing();
             trace("Here first entering.");
+//            sound = (new MySound) as Sound;
+//            sound.play();
 
-			prepareVKUtils();
+            prepareVKUtils();
 //			_vkUtil.clean_DB();
 			createButtons();
 			prepareParser();
@@ -55,6 +61,7 @@ package{
             switch (e.charCode) {
                 case (96) :
                     _listing.switchListing();
+
                     break;
 
                 default :
@@ -79,19 +86,19 @@ package{
 		
 		public function checkPlayerInDbHandler(e:Event):void 
 		{
-			var parsedUser:Object = _parser.parse_user_param(XML(e.target.data));
+			var parsedUid:Object = _parser.parse_user_param(XML(e.target.data));
 
-            Listing.getInstance().listTrace("uid = " + parsedUser.uid);
+            Listing.getInstance().listTrace("uid = " + parsedUid.uid);
 			//_vkUtil.getUser(_flashVars['viewer_id'], savePlayerHandler); //test - must be removed!
 			//savePlayerHandler(parsedUser);
 			
-			if (parsedUser.value){
+			if (parsedUid.value){
                 Listing.getInstance().listTrace("Player in db");//start "player in bd" link
 				_vkUtil.getUserByUid_DB(_flashVars['viewer_id'], getUserByUidHandler);
 			}else {
                 Listing.getInstance().listTrace("Player not in Db");//start "player not in bd" link
 				_vkUtil.getUser(_flashVars['viewer_id'], savePlayerHandler);	
-				addPlayerToUserList();
+//				addPlayerToUserList();
 			}
 		}
 		
@@ -99,6 +106,7 @@ package{
 		{
 			var userFromDb:Object;
 			var user_type:uint = 2;
+            var user_photo:String = "http://truelancer.com/vkontakte/images/camera_c.gif";
             Listing.getInstance().listTrace("getUserByUidHandler ");
             Listing.getInstance().listTrace("fromDB: " + e.target.data);
 				userFromDb = _parser.parse_user_get(XML(e.target.data));
@@ -108,8 +116,12 @@ package{
 				user_type = 1;//user from db is Player
 				//return;
 			}
-			
-			var player:User = new User(userFromDb.uid, userFromDb.first_name, userFromDb.last_name, userFromDb.photo, user_type, userFromDb.rnd);
+
+            if (userFromDb.photo != "http://vk.com/images/camera_c.gif"){
+                user_photo = userFromDb.photo;
+            }
+
+			var player:User = new User(userFromDb.uid, userFromDb.first_name, userFromDb.last_name, user_photo, user_type, userFromDb.rnd);
 			_userList.unshift(player);//end "player in bd" link
 			//viewResult(_parser.parse_user_get(XML(e.target.data)));
 		}
@@ -137,7 +149,11 @@ package{
 			
 			if (_flashVars.api_id) {
                 Listing.getInstance().listTrace("Run from VK, Ok");
-			}else{
+                Listing.getInstance().listTrace("api_id = "+_flashVars.api_id);
+                Listing.getInstance().listTrace("viewer_id = "+_flashVars.viewer_id);
+                Listing.getInstance().listTrace("sid = "+_flashVars.sid);
+                Listing.getInstance().listTrace("secret = "+_flashVars.secret);
+            }else{
                 Listing.getInstance().listTrace("Possible local testing, or some problems");
 				try 
 				{
@@ -194,6 +210,13 @@ package{
 			addChild(btnGetUserFriends);
 			
 			btnGetUserFriends.addEventListener(MouseEvent.CLICK, getUserFriends);
+
+            var btnBuyTime: VKButton = new VKButton('Buy Time!');
+            btnBuyTime.x = 2;
+            btnBuyTime.y = 4+btnGetUserFriends.height;
+            addChild(btnBuyTime);
+
+            btnBuyTime.addEventListener(MouseEvent.CLICK, buyTime);
 		}
 		
 		private function get_user_param(e:MouseEvent):void 
@@ -223,7 +246,6 @@ package{
 			
 			_parser.parse_users_get(XML(e.target.data));
 			viewResult(_parser.parse_users_get(XML(e.target.data)));
-			
 		}
 		
 		private function viewResult(data:Object):void {
@@ -246,14 +268,22 @@ package{
 		}
 		
 		private function getUserFriendsHandler(data: Object):void {
+            var user_photo:String = "http://truelancer.com/vkontakte/images/camera_c.gif";
+
             Listing.getInstance().listTrace("getUserFriendsHandler");
             Listing.getInstance().listTrace("data = "+data);
 			for (var user:String in data) {
-				var userC:User = new User(data[user]["uid"], data[user]["first_name"], data[user]["last_name"], data[user]["photo"], 3, 100);
+                if(data[user]["photo"] != "http://vk.com/images/camera_c.gif"){
+                    user_photo = data[user]["photo"];
+                }else{
+                    user_photo = "http://truelancer.com/vkontakte/images/camera_c.gif";
+                }
+				var userC:User = new User(data[user]["uid"], data[user]["first_name"], data[user]["last_name"], user_photo, 3, 100);
 				suppUser(userC);
 				_userList.push(userC);
 			}
 		}
+
 		private function suppUser(user:User):void {
 			//Listing.getInstance().listTrace("suppUser "+user.uid+";");
 			_vkUtil.get_user_param(user.uid, "rnd", setUserTypeByDbHandler);
@@ -342,13 +372,32 @@ package{
 		private function savePlayerHandler(data: Object):void {
             Listing.getInstance().listTrace("savePlayerHandler");
 			_vkUtil.saveUserToDb(Object(data[0]), savePlayerToDbHandler);
+
+            var user_photo:String = "http://truelancer.com/vkontakte/images/camera_c.gif";
+
+            Listing.getInstance().listTrace("savePlayerHandler");
+            Listing.getInstance().listTrace("data = "+data);
+
+            if(data[0]["photo"] != "http://vk.com/images/camera_c.gif"){
+                user_photo = data[0]["photo"];
+            }
+            var player:User = new User(data[0]["uid"], data[0]["first_name"], data[0]["last_name"], user_photo, 1, 200);
+            _userList.push(player);//end "player not in bd" link
 		}
-		
+
 		private function savePlayerToDbHandler(e:Event):void 
 		{
-			_vkUtil.getUserByUid_DB(_flashVars['viewer_id'], getUserByUidHandler);
+            Listing.getInstance().listTrace("Player saved to db");
+            _vkUtil.get_user_param((_parser.parse_saveUserToDb_resp(XML(e.target.data))).uid, "rnd", rndHandler);
+//            _userList[0].rnd = (e.target.data)
+//			_vkUtil.getUserByUid_DB(_flashVars['viewer_id'], getUserByUidHandler);
 			//checkPlayerInDb();
 		}
+
+        private function rndHandler(e:Event):void {
+            Listing.getInstance().listTrace("rndHandler \n");
+            _userList[0].rnd = _parser.parse_user_param(XML(e.target.data)).value;
+        }
 		
 		private function saveUser(e:MouseEvent):void 
 		{
@@ -367,6 +416,10 @@ package{
 			_resultPopUp.writeText(e.target.data);
 		}
 
+        private function buyTime(event:MouseEvent):void {
+            _vkUtil.showOrderBox("time");
+        }
+
 		private var _vkUtil:VKUtil;
 		private var _flashVars: Object;
 		private var _parser:ParserXML;
@@ -377,5 +430,6 @@ package{
 		
 		private var _userList:Vector.<User>;
 		private var _slotList:Vector.<Slot>;
+
     }
 }

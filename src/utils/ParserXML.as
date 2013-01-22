@@ -45,7 +45,19 @@ import gui.Listing;
 			
 			return result;
 		}
-		
+
+        public function parse_saveUserToDb_resp(xml:XML):Object {
+
+            var result:Object = new Object;
+
+            result.uid = uint(xml.user.uid);
+
+            if(xml.error!="")
+                Listing.getInstance().listTrace("parse_user_get   xml.error = " + xml.error);
+
+            return result;
+        }
+
 		public function parse_user_param(xml:XML):Object {
 			//trace ("parse_user_param -  "+xml);
 			var result:Object = new Object; 
