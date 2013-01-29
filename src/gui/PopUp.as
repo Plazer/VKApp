@@ -49,7 +49,7 @@ package gui
 			_btnClose = new CustomSimpleButton();
 
             _btnClose.x = this.width - _btnClose.width;
-            _btnClose.y = 8;
+            _btnClose.y = 0;
 			
             addChild(_btnClose);
             _btnClose.addEventListener(MouseEvent.CLICK, close);

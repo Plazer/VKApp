@@ -45,7 +45,7 @@ package utils
 			loader.addEventListener(Event.COMPLETE, clean_DBHandler);
 		}
 		
-		public function get_user_param(uid:uint, param:String, resultHandler:Function):void {
+		public function getUserParam(uid:uint, param:String, resultHandler:Function):void {
 			var loader:URLLoader = new URLLoader();
 			var request:URLRequest = new URLRequest("http://truelancer.com/vkontakte/index.php/main/get_user_param");
 
@@ -130,7 +130,6 @@ package utils
             });
         }
 
-		
 		public function setApiConnection(flashVars:Object):void 
 		{
 			_VK = new APIConnection(flashVars);
